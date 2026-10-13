@@ -45,7 +45,11 @@ Python · Apache Kafka · Spark Structured Streaming (Scala) · Hadoop HDFS · I
 
 ## Demo
 
-Watch the [demo video](demo/Big_Data_Demo.mp4) showing the project interface and results. For the complete-quality original recording, see the external demonstration link in `docs/original-video-link.txt` when available.
+🎬 **[Watch the full project demonstration (Google Drive)](https://drive.google.com/drive/folders/1wJcun1Kyl4SrV5Y2aMt2G-Ui2xI_CYsL?usp=sharing)**
+
+The demonstration showcases the real-time cryptocurrency data pipeline, from ingestion with Kafka and processing with Spark Streaming to visualization using InfluxDB and Grafana.
+
+The video is also available in a compressed version in the [demo folder](demo/Big_Data_Demo.mp4).
 
 ## Source code
 
@@ -71,4 +75,4 @@ The uploaded original code contained an embedded InfluxDB authentication token. 
 
 ## Credits
 
-This was a collaborative academic project. The original GitLab repository includes contributions by **Marc Melvin NGANGNANG MBAKOH** and the rest of the student project team. This portfolio repository preserves the group-project attribution and does not claim sole authorship. Add all participants' names/links if agreed with the team.
+This was a collaborative academic project. The original GitLab repository includes contributions by **Mazigh Mohammedi** and the rest of the student project team. This portfolio repository preserves the group-project attribution and does not claim sole authorship
