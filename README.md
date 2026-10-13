@@ -4,25 +4,9 @@
 
 A distributed streaming pipeline built to collect cryptocurrency market data, ingest events through Apache Kafka, transform the stream using Apache Spark Structured Streaming (Scala), store time-series measurements in InfluxDB, and visualize activity in Grafana. Hadoop HDFS supports distributed storage and Spark checkpoints.
 
-## Architecture
+## Architecture Diagram
 
-```text
-Finnhub API / WebSocket
-          |
-          v
-Python Producer -> Kafka (crypto_trades)
-                         |
-                         v
-                 Spark Structured Streaming (Scala)
-                         |
-                         v
-                    InfluxDB 2.x
-                         |
-                         v
-                      Grafana
-
-HDFS cluster: NameNode + DataNodes; Spark checkpoint storage
-```
+![Architecture Diagram](docs/architecture.png)
 
 ### Distributed infrastructure
 
@@ -69,9 +53,6 @@ The video is also available in a compressed version in the [demo folder](demo/Bi
 
 **Important:** The Scala Spark checkpoint uses `hdfs://master:9000/tmp/chk_kafka_to_influx_crypto`, which must be adjusted to your cluster. The producer and Spark consumer defaults are localhost for safer distribution; override them using environment variables.
 
-## Security
-
-The uploaded original code contained an embedded InfluxDB authentication token. **It has been removed from this public-ready version.** Anyone with access to the original token should **revoke/rotate it** at the source before publishing. Do not commit `.env` files, live tokens, or credentials.
 
 ## Credits
 
