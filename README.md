@@ -1,0 +1,74 @@
+# Real-Time Crypto Market Data Pipeline
+
+**Academic group project — ESILV | Big Data / Streaming**
+
+A distributed streaming pipeline built to collect cryptocurrency market data, ingest events through Apache Kafka, transform the stream using Apache Spark Structured Streaming (Scala), store time-series measurements in InfluxDB, and visualize activity in Grafana. Hadoop HDFS supports distributed storage and Spark checkpoints.
+
+## Architecture
+
+```text
+Finnhub API / WebSocket
+          |
+          v
+Python Producer -> Kafka (crypto_trades)
+                         |
+                         v
+                 Spark Structured Streaming (Scala)
+                         |
+                         v
+                    InfluxDB 2.x
+                         |
+                         v
+                      Grafana
+
+HDFS cluster: NameNode + DataNodes; Spark checkpoint storage
+```
+
+### Distributed infrastructure
+
+The academic cluster comprised **six Linux virtual machines** (one master, five workers):
+
+| Role | Machine(s) |
+| --- | --- |
+| HDFS NameNode and Spark Driver | Master |
+| HDFS DataNodes | Workers 1–4 |
+| Spark Executors | Workers 1–3 |
+| Kafka Broker | Worker 4 |
+| Python Finnhub producer | Worker 5 |
+| InfluxDB and Grafana | Worker 1 |
+
+The original implementation uses lab-specific hostnames, IP addresses and service locations. The code is provided as an **educational reference**, not as a one-command production deployment.
+
+## Stack
+
+Python · Apache Kafka · Spark Structured Streaming (Scala) · Hadoop HDFS · InfluxDB 2.x · Grafana · Linux
+
+## Demo
+
+Watch the [demo video](demo/Big_Data_Demo.mp4) showing the project interface and results. For the complete-quality original recording, see the external demonstration link in `docs/original-video-link.txt` when available.
+
+## Source code
+
+- [`src/producer/finnhub_to_kafka.py`](src/producer/finnhub_to_kafka.py): producer that retrieves Finnhub crypto market events and publishes JSON messages to Kafka.
+- [`src/streaming/kafka_to_influx.scala`](src/streaming/kafka_to_influx.scala): Spark streaming consumer with JSON schema parsing and InfluxDB writing.
+- [`docs/Presentation_Big_Data.pdf`](docs/Presentation_Big_Data.pdf): academic project presentation.
+
+## How to run (requires existing cluster and installed services)
+
+1. Provision and start Kafka, Hadoop HDFS, Spark 3.4.x, InfluxDB 2.x and Grafana. Configure network access between nodes.
+2. Install the Python dependencies in `requirements.txt`.
+3. Export `FINNHUB_API_KEY` and `KAFKA_BOOTSTRAP` on the producer node.
+4. Start the producer: `python3 src/producer/finnhub_to_kafka.py`.
+5. Export `INFLUXDB_TOKEN`, `INFLUXDB_URL`, `INFLUXDB_ORG`, `INFLUXDB_BUCKET` and `KAFKA_BOOTSTRAP` for the Spark process.
+6. Start the Scala consumer with the appropriate Kafka connector libraries and `spark-shell -i src/streaming/kafka_to_influx.scala`.
+7. Configure Grafana with InfluxDB as a data source and recreate the dashboards from the presentation.
+
+**Important:** The Scala Spark checkpoint uses `hdfs://master:9000/tmp/chk_kafka_to_influx_crypto`, which must be adjusted to your cluster. The producer and Spark consumer defaults are localhost for safer distribution; override them using environment variables.
+
+## Security
+
+The uploaded original code contained an embedded InfluxDB authentication token. **It has been removed from this public-ready version.** Anyone with access to the original token should **revoke/rotate it** at the source before publishing. Do not commit `.env` files, live tokens, or credentials.
+
+## Credits
+
+This was a collaborative academic project. The original GitLab repository includes contributions by **Marc Melvin NGANGNANG MBAKOH** and the rest of the student project team. This portfolio repository preserves the group-project attribution and does not claim sole authorship. Add all participants' names/links if agreed with the team.
