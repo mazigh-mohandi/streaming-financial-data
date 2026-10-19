@@ -1,6 +1,6 @@
 # Real-Time Crypto Market Data Pipeline
 
-**Academic group project — ESILV | Big Data / Streaming**
+**Academic group project : ESILV | Big Data / Streaming**
 
 A distributed streaming pipeline built to collect cryptocurrency market data, ingest events through Apache Kafka, transform the stream using Apache Spark Structured Streaming (Scala), store time-series measurements in InfluxDB, and visualize activity in Grafana. Hadoop HDFS supports distributed storage and Spark checkpoints.
 
